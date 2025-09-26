@@ -23,7 +23,7 @@ public class CombSortController {
 
     @FXML
     private Button bt_l12;
-
+//
     @FXML
     private Button bt_l13;
 
