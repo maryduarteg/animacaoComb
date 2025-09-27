@@ -23,7 +23,9 @@ public class MenuController {
     }
 
 
-    public void onCountingSort(ActionEvent actionEvent) {
+    public void onCountingSort(ActionEvent actionEvent)
+    {
+
     }
 
     public void onSair(ActionEvent actionEvent) {

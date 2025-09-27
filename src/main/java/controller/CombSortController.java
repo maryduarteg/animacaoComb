@@ -21,6 +21,9 @@ public class CombSortController {
     private Button bt_l1;
 
     @FXML
+    private Button bt_init;
+
+    @FXML
     private Button bt_l10;
 
     @FXML
@@ -195,14 +198,12 @@ public class CombSortController {
                         final int fa = a;
                         final int fp = p;
                         final int d1 = dist;
-                        final int a1 = a;
-                        final int p1 = p;
 
                         // atualiza labels e setas
                         Platform.runLater(() -> {
                             lb_dist.setText("" + d1);
-                            lb_a.setText("" + a1);
-                            lb_p.setText("" + p1);
+                            lb_a.setText("" + fa);
+                            lb_p.setText("" + fp);
                             lb_seta1.setLayoutX(valores[fa].getLayoutX() + 20);
                             lb_seta2.setLayoutX(valores[fp].getLayoutX() + 20);
                         });
@@ -219,7 +220,7 @@ public class CombSortController {
                             vet[fa] = vet[fp];
                             vet[fp] = temp;
 
-                            // destaca os botões antes da animação
+                            // destaca os botões
                             CountDownLatch highlightLatch = new CountDownLatch(1);
                             Platform.runLater(() -> {
                                 mudarFundoBotaoValor(fa + 1);
@@ -258,7 +259,7 @@ public class CombSortController {
                                 valores[fa] = valores[fp];
                                 valores[fp] = tmpBtn;
 
-                                // remove destaque depois da animação
+                                // remove destaque
                                 normalizarFundoBotaoValor(fa + 1);
                                 normalizarFundoBotaoValor(fp + 1);
 
@@ -270,7 +271,7 @@ public class CombSortController {
                         a++;
                         p = a + dist;
 
-                        // linha de debug
+                        // linhas de debug
                         mudarFundoBotaoCodigo(10);
                         Thread.sleep(sleepMs * 2);
                         normalizarLinha(10);
@@ -290,12 +291,31 @@ public class CombSortController {
 
                 return null;
             }
+
+            @Override
+            protected void succeeded() {
+                Platform.runLater(() -> bt_init.setDisable(false));
+            }
+
+            @Override
+            protected void failed() {
+                Platform.runLater(() -> bt_init.setDisable(false));
+            }
+
+            @Override
+            protected void cancelled() {
+                Platform.runLater(() -> bt_init.setDisable(false));
+            }
         };
+
+        // desabilita botão antes de iniciar
+        bt_init.setDisable(true);
 
         Thread t = new Thread(sortTask);
         t.setDaemon(true);
         t.start();
     }
+
 
 
 
