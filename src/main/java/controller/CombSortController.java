@@ -142,14 +142,15 @@ public class CombSortController {
     public void normalizarFundoBotaoValor(int botao) {
         if (botao >= 1 && botao <= valores.length) {
             int idx = botao - 1;
-            Platform.runLater(() -> valores[idx].setStyle(""));
+            Platform.runLater(() -> valores[idx].setStyle("-fx-background-color: #e8e9eb"));
         }
     }
 
     public void normalizarLinha(int botao) {
         if (botao >= 1 && botao <= linhas.length) {
             int idx = botao - 1;
-            Platform.runLater(() -> linhas[idx].setStyle(""));
+            Platform.runLater(() -> linhas[idx].setStyle("-fx-background-color: #e8e9eb"));
+
         }
     }
 
@@ -170,12 +171,10 @@ public class CombSortController {
             @Override
             protected Void call() throws Exception {
                 int dist = max;
-                boolean houveTroca = true;
 
-                while (dist >= 1 || houveTroca) {
-                    dist = (int) (dist / 1.3);
-                    if (dist < 1) dist = 1;
-                    houveTroca = false;
+                while (dist >= 1) {
+
+
 
                     // linha de debug
                     mudarFundoBotaoCodigo(3);
@@ -213,7 +212,7 @@ public class CombSortController {
                         normalizarLinha(6);
 
                         if (vet[fa] > vet[fp]) {
-                            houveTroca = true;
+
 
                             // troca na memória
                             int temp = vet[fa];
