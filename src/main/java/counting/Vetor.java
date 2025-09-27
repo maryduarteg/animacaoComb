@@ -1,22 +1,38 @@
 package counting;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class Vetor {
     private int TL = 10;
-    private int[] vet = new int[TL];
+    private int[] vet;
 
-    public Vetor() {}
+    public Vetor() {
+        vet = new int[TL];
+    }
+
+    public Vetor(int TL) {
+        this.TL = TL;
+        vet = new int[TL];
+    }
 
     public void popularVet() {
         Random rand = new Random();
         for (int i = 0; i < TL; i++) {
-            vet[i] = rand.nextInt(50);
+            vet[i] = rand.nextInt(10);
         }
     }
 
-    public String at(int i) {
-        return vet[i] + "";
+    public int getMax() {
+        return Arrays.stream(vet).max().getAsInt();
+    }
+
+    public int at(int i) {
+        return vet[i];
+    }
+
+    public void setAt(int i, int valor) {
+        vet[i] = valor;
     }
 
     public int getTL() {
