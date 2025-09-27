@@ -55,16 +55,6 @@
             <Font name="System Bold" size="29.0" />
          </font>
       </Label>
-      <Label layoutX="25.0" layoutY="438.0" text="temp:">
-         <font>
-            <Font name="System Bold" size="29.0" />
-         </font>
-      </Label>
-      <Label fx:id="lb_temp" layoutX="128.0" layoutY="427.0" text=".">
-         <font>
-            <Font name="System Bold" size="29.0" />
-         </font>
-      </Label>
       <Button fx:id="bt_l1" layoutX="747.0" layoutY="42.0" mnemonicParsing="false" prefHeight="7.0" prefWidth="363.0" text="public void combSort(){" />
       <Button fx:id="bt_l2" layoutX="747.0" layoutY="64.0" mnemonicParsing="false" prefHeight="7.0" prefWidth="363.0" text="int dist = this.max, a = 0, p, temp;" />
       <Button fx:id="bt_l3" layoutX="747.0" layoutY="85.0" mnemonicParsing="false" prefHeight="7.0" prefWidth="363.0" text="dist = dist/1.3;" />
@@ -89,7 +79,18 @@
       <Label layoutX="447.0" layoutY="180.0" text="5" />
       <Label layoutX="527.0" layoutY="180.0" text="6" />
       <Label layoutX="607.0" layoutY="180.0" text="7" />
-      <Button fx:id="bt_init" layoutX="382.0" layoutY="323.0" mnemonicParsing="false" onAction="#onIniciar" text="Iniciar" />
+      <Button fx:id="bt_init" layoutX="285.0" layoutY="403.0" mnemonicParsing="false" onAction="#onIniciar" prefHeight="32.0" prefWidth="111.0" text="Iniciar" />
+      <Label fx:id="lb_seta1" layoutX="34.0" layoutY="203.0" text="^">
+         <font>
+            <Font size="44.0" />
+         </font>
+      </Label>
+      <Label fx:id="lb_seta2" layoutX="113.0" layoutY="203.0" text="^">
+         <font>
+            <Font size="44.0" />
+         </font>
+      </Label>
+      <Button fx:id="bt_fechar" layoutX="416.0" layoutY="403.0" mnemonicParsing="false" onAction="#onFechar" prefHeight="32.0" prefWidth="111.0" text="Fechar" />
       
    </children>
 </Pane>

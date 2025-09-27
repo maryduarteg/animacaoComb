@@ -1,13 +1,18 @@
 package controller;
 
+import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 
-import java.awt.event.ActionEvent;
 import java.util.Random;
+import java.util.concurrent.CountDownLatch;
 
 public class CombSortController {
 
@@ -23,7 +28,7 @@ public class CombSortController {
 
     @FXML
     private Button bt_l12;
-//
+
     @FXML
     private Button bt_l13;
 
@@ -94,166 +99,214 @@ public class CombSortController {
     private Label lb_p;
 
     @FXML
-    private Label lb_temp;
+    private Label lb_seta1;
 
     @FXML
-    private Label lb_vl_dist;
+    private Label lb_seta2;
 
-    @FXML
-    void onIniciar(ActionEvent event) {
-        iniciarCombSort();
-    }
+
 
     private Button[] valores = new Button[8];
+    private Button[] linhas = new Button[12];
+    private int vet[] = new int[8];
     Random random = new Random();
-    int a, p, max, dist, finalA, finalP;
-    String temp;
-    double aux;
+
 
     @FXML
-    public void initialize() {
+    public void iniciar() {
         valores = new Button[]{btv_1, btv_2, btv_3, btv_4, btv_5, btv_6, btv_7, btv_8};
+        linhas = new Button[]{bt_l1, bt_l2, bt_l3, bt_l4, bt_l5, bt_l6, bt_l7, bt_l8, bt_l9, bt_l10, bt_l11, bt_l12};
+        int aux;
         for(int i = 0; i<8;i++)
-            valores[i].setText(""+random.nextInt(101));
+        {
+            aux = random.nextInt(101);
+            valores[i].setText(""+aux);
+            vet[i] = aux;
+        }
+
         lb_dist.setText("8");
         lb_a.setText("0");
         mudarFundoBotaoCodigo(2);
     }
 
-    public void mudarFundoBotaoValor(int botao)
-    {
-        switch(botao)
-        {
-            case 1: btv_1.setStyle("fx-background-color: #f491ba");break;
-            case 2: btv_2.setStyle("fx-background-color: #f491ba");break;
-            case 3: btv_3.setStyle("fx-background-color: #f491ba");break;
-            case 4: btv_4.setStyle("fx-background-color: #f491ba");break;
-            case 5: btv_5.setStyle("fx-background-color: #f491ba");break;
-            case 6: btv_6.setStyle("fx-background-color: #f491ba");break;
-            case 7: btv_7.setStyle("fx-background-color: #f491ba");break;
-            case 8: btv_8.setStyle("fx-background-color: #f491ba");break;
-        }
-    }
-    public void normalizarFundoBotaoValor(int botao)
-    {
-        switch(botao)
-        {
-            case 1: btv_1.setStyle("");break;
-            case 2: btv_2.setStyle("");break;
-            case 3: btv_3.setStyle("");break;
-            case 4: btv_4.setStyle("");break;
-            case 5: btv_5.setStyle("");break;
-            case 6: btv_6.setStyle("");break;
-            case 7: btv_7.setStyle("");break;
-            case 8: btv_8.setStyle("");break;
+    public void mudarFundoBotaoValor(int botao) {
+        if (botao >= 1 && botao <= valores.length) {
+            int idx = botao - 1;
+            Platform.runLater(() -> valores[idx].setStyle("-fx-background-color: #f491ba;"));
         }
     }
 
-    public void mudarFundoBotaoCodigo(int linha)
-    {
-        switch (linha)
-        {
-            case 1: bt_l1.setStyle("-fx-background-color: #6faeef;"); break;
-            case 2: bt_l2.setStyle("-fx-background-color: #6faeef;"); break;
-            case 3: bt_l3.setStyle("-fx-background-color: #6faeef;"); break;
-            case 4: bt_l4.setStyle("-fx-background-color: #6faeef;"); break;
-            case 5: bt_l5.setStyle("-fx-background-color: #6faeef;"); break;
-            case 6: bt_l6.setStyle("-fx-background-color: #6faeef;"); break;
-            case 7: bt_l7.setStyle("-fx-background-color: #6faeef;"); break;
-            case 8: bt_l8.setStyle("-fx-background-color: #6faeef;"); break;
-            case 9: bt_l9.setStyle("-fx-background-color: #6faeef;"); break;
-            case 10: bt_l10.setStyle("-fx-background-color: #6faeef;"); break;
-            case 11: bt_l11.setStyle("-fx-background-color: #6faeef;"); break;
-            case 12: bt_l12.setStyle("-fx-background-color: #6faeef;"); break;
-            case 13: bt_l13.setStyle("-fx-background-color: #6faeef;"); break;
-            case 14: bt_l4.setStyle("-fx-background-color: #6faeef;"); break;
-            case 15: bt_l15.setStyle("-fx-background-color: #6faeef;"); break;
-            case 16: bt_l16.setStyle("-fx-background-color: #6faeef;"); break;
+    public void normalizarFundoBotaoValor(int botao) {
+        if (botao >= 1 && botao <= valores.length) {
+            int idx = botao - 1;
+            Platform.runLater(() -> valores[idx].setStyle(""));
         }
     }
 
-    public void normalizarFundoBotaoCodigo(int linha)
-    {
-        switch (linha)
-        {
-            case 1: bt_l1.setStyle(""); break;
-            case 2: bt_l2.setStyle(""); break;
-            case 3: bt_l3.setStyle(""); break;
-            case 4: bt_l4.setStyle(""); break;
-            case 5: bt_l5.setStyle(""); break;
-            case 6: bt_l6.setStyle(""); break;
-            case 7: bt_l7.setStyle(""); break;
-            case 8: bt_l8.setStyle(""); break;
-            case 9: bt_l9.setStyle(""); break;
-            case 10: bt_l10.setStyle(""); break;
-            case 11: bt_l11.setStyle(""); break;
-            case 12: bt_l12.setStyle(""); break;
-            case 13: bt_l13.setStyle(""); break;
-            case 14: bt_l4.setStyle(""); break;
-            case 15: bt_l15.setStyle(""); break;
-            case 16: bt_l16.setStyle(""); break;
+    public void normalizarLinha(int botao) {
+        if (botao >= 1 && botao <= linhas.length) {
+            int idx = botao - 1;
+            Platform.runLater(() -> linhas[idx].setStyle(""));
         }
     }
 
+    public void mudarFundoBotaoCodigo(int botao) {
+        if (botao >= 1 && botao <= linhas.length) {
+            int idx = botao - 1;
+            Platform.runLater(() -> linhas[idx].setStyle("-fx-background-color: #6faeef;"));
+        }
+    }
 
     public void iniciarCombSort() {
-        initialize();
-        a = 0;
-        max = 8;
-        dist = (int)(max / 1.3);
-        p = dist;
+        iniciar();
+        final int max = valores.length;
+        normalizarLinha(2);
+        long sleepMs = 100;
 
-        while (dist > 1) {
-            while (p < max) {
-                finalA = a;
-                finalP = p;
-                if (Integer.parseInt(valores[a].getText()) > Integer.parseInt(valores[p].getText())) {
-                    aux = valores[a].getLayoutY();
+        Task<Void> sortTask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                int dist = max;
+                boolean houveTroca = true;
 
-                    Task<Void> task = new Task<Void>() {
-                        protected Void call() {
-                            double targetA = valores[finalP].getLayoutY();
-                            double targetP = aux;
+                while (dist >= 1 || houveTroca) {
+                    dist = (int) (dist / 1.3);
+                    if (dist < 1) dist = 1;
+                    houveTroca = false;
 
-                            // animação passo a passo
-                            while (valores[finalA].getLayoutY() < targetA || valores[finalP].getLayoutY() > targetP) {
+                    // linha de debug
+                    mudarFundoBotaoCodigo(3);
+                    Thread.sleep(sleepMs * 2);
+                    normalizarLinha(3);
+
+                    int a = 0;
+                    int p = a + dist;
+
+                    // linha de debug
+                    mudarFundoBotaoCodigo(4);
+                    Thread.sleep(sleepMs * 2);
+                    normalizarLinha(4);
+
+                    while (p < max) {
+                        mudarFundoBotaoCodigo(5);
+                        Thread.sleep(sleepMs * 2);
+                        normalizarLinha(5);
+
+                        final int fa = a;
+                        final int fp = p;
+                        final int d1 = dist;
+                        final int a1 = a;
+                        final int p1 = p;
+
+                        // atualiza labels e setas
+                        Platform.runLater(() -> {
+                            lb_dist.setText("" + d1);
+                            lb_a.setText("" + a1);
+                            lb_p.setText("" + p1);
+                            lb_seta1.setLayoutX(valores[fa].getLayoutX() + 20);
+                            lb_seta2.setLayoutX(valores[fp].getLayoutX() + 20);
+                        });
+
+                        mudarFundoBotaoCodigo(6);
+                        Thread.sleep(sleepMs * 2);
+                        normalizarLinha(6);
+
+                        if (vet[fa] > vet[fp]) {
+                            houveTroca = true;
+
+                            // troca na memória
+                            int temp = vet[fa];
+                            vet[fa] = vet[fp];
+                            vet[fp] = temp;
+
+                            // destaca os botões antes da animação
+                            CountDownLatch highlightLatch = new CountDownLatch(1);
+                            Platform.runLater(() -> {
+                                mudarFundoBotaoValor(fa + 1);
+                                mudarFundoBotaoValor(fp + 1);
+                                highlightLatch.countDown();
+                            });
+                            highlightLatch.await();
+
+                            final double xsA = valores[fa].getLayoutX();
+                            final double xsP = valores[fp].getLayoutX();
+
+                            // animação deslizando
+                            double distance = xsP - xsA;
+                            int steps = 20;
+                            double step = distance / steps;
+
+                            for (int s = 0; s < steps; s++) {
+                                final double inc = step;
                                 Platform.runLater(() -> {
-                                    if (valores[finalA].getLayoutY() < targetA) {
-                                        valores[finalA].setLayoutY(valores[finalA].getLayoutY() + 2);
-                                    }
-                                    if (valores[finalP].getLayoutY() > targetP) {
-                                        valores[finalP].setLayoutY(valores[finalP].getLayoutY() - 2);
-                                    }
+                                    valores[fa].setTranslateX(valores[fa].getTranslateX() + inc);
+                                    valores[fp].setTranslateX(valores[fp].getTranslateX() - inc);
                                 });
-
-                                try {
-                                    Thread.sleep(10); // velocidade da animação
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
+                                Thread.sleep(sleepMs);
                             }
 
-                            // troca os valores após a animação
-                            String temp = valores[finalA].getText();
-                            valores[finalA].setText(valores[finalP].getText());
-                            valores[finalP].setText(temp);
+                            // fixa posição e troca no vetor de botões
+                            CountDownLatch placeLatch = new CountDownLatch(1);
+                            Platform.runLater(() -> {
+                                valores[fa].setLayoutX(xsP);
+                                valores[fp].setLayoutX(xsA);
+                                valores[fa].setTranslateX(0);
+                                valores[fp].setTranslateX(0);
 
-                            return null;
+                                // troca referências no vetor de botões
+                                Button tmpBtn = valores[fa];
+                                valores[fa] = valores[fp];
+                                valores[fp] = tmpBtn;
+
+                                // remove destaque depois da animação
+                                normalizarFundoBotaoValor(fa + 1);
+                                normalizarFundoBotaoValor(fp + 1);
+
+                                placeLatch.countDown();
+                            });
+                            placeLatch.await();
                         }
-                    };
 
-                    Thread thread = new Thread(task);
-                    thread.start();
+                        a++;
+                        p = a + dist;
+
+                        // linha de debug
+                        mudarFundoBotaoCodigo(10);
+                        Thread.sleep(sleepMs * 2);
+                        normalizarLinha(10);
+
+                        mudarFundoBotaoCodigo(11);
+                        Thread.sleep(sleepMs * 2);
+                        normalizarLinha(11);
+                    }
+
+                    dist = (int) (dist / 1.3);
+
+                    // linha de debug
+                    mudarFundoBotaoCodigo(12);
+                    Thread.sleep(sleepMs * 2);
+                    normalizarLinha(12);
                 }
 
-                a++;
-                p = a + dist;
+                return null;
             }
-            dist = (int)(dist / 1.3);
-        }
+        };
+
+        Thread t = new Thread(sortTask);
+        t.setDaemon(true);
+        t.start();
     }
 
+
+
+    @FXML
     public void onIniciar(javafx.event.ActionEvent actionEvent) {
+        iniciarCombSort();
+    }
+
+    public void onFechar(ActionEvent actionEvent) {
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        stage.close();
     }
 }
 
