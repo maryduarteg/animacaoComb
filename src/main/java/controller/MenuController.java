@@ -1,5 +1,6 @@
 package controller;
 
+import counting.Counting;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -23,9 +24,9 @@ public class MenuController {
     }
 
 
-    public void onCountingSort(ActionEvent actionEvent)
-    {
-
+    public void onCountingSort(ActionEvent actionEvent) throws Exception {
+        Counting counting = new Counting();
+        counting.start(new Stage());
     }
 
     public void onSair(ActionEvent actionEvent) {
