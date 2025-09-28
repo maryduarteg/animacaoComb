@@ -11,7 +11,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.text.Font;
 
-import static java.lang.Math.abs;
 import static java.lang.Thread.sleep;
 
 public class Counting extends Application {
@@ -324,4 +323,3 @@ public class Counting extends Application {
         });
     }
 }
-
