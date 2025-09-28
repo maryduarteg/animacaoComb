@@ -149,7 +149,7 @@ public class CombSortController {
     public void normalizarLinha(int botao) {
         if (botao >= 1 && botao <= linhas.length) {
             int idx = botao - 1;
-            Platform.runLater(() -> linhas[idx].setStyle("-fx-background-color: #e8e9eb"));
+            Platform.runLater(() -> linhas[idx].setStyle("-fx-alignment: left;-fx-background-color: #e8e9eb"));
 
         }
     }
@@ -157,7 +157,7 @@ public class CombSortController {
     public void mudarFundoBotaoCodigo(int botao) {
         if (botao >= 1 && botao <= linhas.length) {
             int idx = botao - 1;
-            Platform.runLater(() -> linhas[idx].setStyle("-fx-background-color: #6faeef;"));
+            Platform.runLater(() -> linhas[idx].setStyle("-fx-alignment: left;-fx-background-color: #6faeef;"));
         }
     }
 
@@ -189,10 +189,14 @@ public class CombSortController {
                     Thread.sleep(sleepMs * 2);
                     normalizarLinha(4);
 
+                    mudarFundoBotaoCodigo(5);
+                    Thread.sleep(sleepMs * 2);
+                    normalizarLinha(5);
+
                     while (p < max) {
-                        mudarFundoBotaoCodigo(5);
+                        mudarFundoBotaoCodigo(6);
                         Thread.sleep(sleepMs * 2);
-                        normalizarLinha(5);
+                        normalizarLinha(6);
 
                         final int fa = a;
                         final int fp = p;
@@ -207,9 +211,9 @@ public class CombSortController {
                             lb_seta2.setLayoutX(valores[fp].getLayoutX() + 20);
                         });
 
-                        mudarFundoBotaoCodigo(6);
+                        mudarFundoBotaoCodigo(7);
                         Thread.sleep(sleepMs * 2);
-                        normalizarLinha(6);
+                        normalizarLinha(7);
 
                         if (vet[fa] > vet[fp]) {
 
@@ -218,6 +222,23 @@ public class CombSortController {
                             int temp = vet[fa];
                             vet[fa] = vet[fp];
                             vet[fp] = temp;
+
+                            mudarFundoBotaoCodigo(7);
+                            Thread.sleep(sleepMs * 2);
+                            normalizarLinha(7);
+
+                            mudarFundoBotaoCodigo(8);
+                            Thread.sleep(sleepMs * 2);
+                            normalizarLinha(8);
+
+                            mudarFundoBotaoCodigo(9);
+                            Thread.sleep(sleepMs * 2);
+                            normalizarLinha(9);
+
+                            mudarFundoBotaoCodigo(10);
+                            Thread.sleep(sleepMs * 2);
+                            normalizarLinha(10);
+
 
                             // destaca os botões
                             CountDownLatch highlightLatch = new CountDownLatch(1);
@@ -271,21 +292,21 @@ public class CombSortController {
                         p = a + dist;
 
                         // linhas de debug
-                        mudarFundoBotaoCodigo(10);
+                        mudarFundoBotaoCodigo(12);
                         Thread.sleep(sleepMs * 2);
-                        normalizarLinha(10);
+                        normalizarLinha(12);
 
-                        mudarFundoBotaoCodigo(11);
+                        mudarFundoBotaoCodigo(13);
                         Thread.sleep(sleepMs * 2);
-                        normalizarLinha(11);
+                        normalizarLinha(13);
                     }
 
                     dist = (int) (dist / 1.3);
 
                     // linha de debug
-                    mudarFundoBotaoCodigo(12);
+                    mudarFundoBotaoCodigo(15);
                     Thread.sleep(sleepMs * 2);
-                    normalizarLinha(12);
+                    normalizarLinha(15);
                 }
 
                 return null;
