@@ -17,15 +17,15 @@ import static java.lang.Thread.sleep;
 public class Counting extends Application {
     AnchorPane pane;
     Button botao_inicio;
-    private Button[] vetl;
-    private Button[] vetc;
-    private Button[] vets;
+    private Button[] buttons_vetl;
+    private Button[] buttons_vetc;
+    private Button[] buttons_vets;
     private final Label[] linha = new Label[20];
     private Text[] indices;
     private final Vetor vet_l = new Vetor();
     private Vetor vet_c;
     private final Vetor vet_s = new Vetor();
-    private final int t = 400;
+    private final int t = 350;
 
     public static void main(String[] args) {
         launch(args);
@@ -40,25 +40,29 @@ public class Counting extends Application {
         //Texto
         Text titulo = new Text("Counting Sort");
         titulo.setFont(new Font("Papyrus", 32));
-        titulo.setLayoutY(80); titulo.setLayoutX(250);
+        titulo.setLayoutY(80); titulo.setLayoutX(275);
         pane.getChildren().add(titulo);
 
         //Botão de inicio
         botao_inicio = new Button();
-        botao_inicio.setLayoutX(1138); botao_inicio.setLayoutY(385);
+        botao_inicio.setLayoutX(1175); botao_inicio.setLayoutY(400);
         botao_inicio.setText("Start");
-        botao_inicio.setOnAction(e->{ principal(); });
+        botao_inicio.setOnAction(e->{
+            botao_inicio.setDisable(true);
+            principal();
+        });
         pane.getChildren().add(botao_inicio);
 
         //Gerar itens e indices do vetor principal
         vet_l.popularVet();
-        gerarBotoes(vet_l, vetl,0);
+        texto("l", 65, 175);
+        gerarBotoesVetL(0);
         gerarIndices(vet_l, 0);
 
         //Gerar linhas do codigo
         gerarLinhas();
 
-        Scene scene = new Scene(pane, 1300, 600);
+        Scene scene = new Scene(pane, 1250, 450);
         stage.setScene(scene);
         stage.show();
     }
@@ -76,58 +80,144 @@ public class Counting extends Application {
                 criarVetC();
                 criarVetS();
                 gotoLine(4, 5);
-                loopLine(6, vet_l.getTL(), execVetC());
+                execLoop1();
+                gotoLine(7, 9);
+                execLoop2();
+                gotoLine(11, 13);
+                execLoop3();
+                gotoLine(16, 20);
             }
 
-            public Runnable execVetC() throws InterruptedException {
-                Platform.runLater(() -> {
-                    for (int i = 0; i < vet_c.getTL(); i++) {
-                        vet_c.setAt(vet_l.at(i), vet_c.at(i) + 1);
-                        vetc[i].setText((vet_c.at(i) + 1) + "");
-                    }
-                });
-                return null;
-            }
+            public void execLoop3() throws InterruptedException {
+                int[] tempVetC = vet_c.getVet();
+                int[] tempVetL = vet_l.getVet();
+                int[] tempVetS = vet_s.getVet();
 
-            public void loopLine(int line, int tl, Runnable r) throws InterruptedException {
-                for (int i = 0; i < tl; i++) {
-                    background(linha[line], 1); sleep(t);
-                    background(linha[line], 0); sleep(t);
-                    r.run();
+                for (int i = 0; i < vet_l.getTL(); i++) {
+                    int idx = i;
+                    int valor = tempVetL[idx];
+
+                    backgroundL(linha[14], "#c9c5c5");
+                    backgroundL(linha[15], "#c9c5c5");
+                    sleep(t);
+
+                    Platform.runLater(() -> {
+                        backgroundB(buttons_vetl[idx], "#009dff");
+                        backgroundB(buttons_vetc[valor], "#009dff");
+                    });
+                    sleep(t);
+
+                    tempVetC[valor] = tempVetC[valor] - 1;
+                    int pos = tempVetC[valor];
+                    tempVetS[pos] = valor;
+
+                    Platform.runLater(() -> {
+                        buttons_vetc[valor].setText(tempVetC[valor] + "");
+                        buttons_vets[pos].setText(valor + "");
+                        backgroundB(buttons_vets[pos], "#00ff00");
+                    });
+                    sleep(t);
+
+                    Platform.runLater(() -> {
+                        buttons_vetl[idx].setStyle("");
+                        buttons_vetc[valor].setStyle("");
+                        buttons_vets[pos].setStyle("");
+                    });
+                    backgroundL(linha[14], "transparent");
+                    backgroundL(linha[15], "transparent");
+                    sleep(t);
                 }
+
+                vet_c.setVet(tempVetC);
+                vet_s.setVet(tempVetS);
+            }
+
+            public void execLoop2() throws InterruptedException {
+                int[] tempVetC = vet_c.getVet();
+
+                for (int i = 1; i <= vet_l.getMax(); i++) {
+                    int idx = i;
+
+                    backgroundL(linha[10], "#c9c5c5");
+                    sleep(t);
+
+                    Platform.runLater(() -> {
+                        backgroundB(buttons_vetc[idx], "#009dff");
+                        backgroundB(buttons_vetc[idx - 1], "#009dff");
+                        tempVetC[idx] += tempVetC[idx - 1];
+                        buttons_vetc[idx].setText(tempVetC[idx] + "");
+                    });
+                    sleep(t);
+
+                    Platform.runLater(() -> {buttons_vetc[idx].setStyle("");});
+                    Platform.runLater(() -> {buttons_vetc[idx - 1].setStyle("");});
+                    backgroundL(linha[10], "transparent");
+                    sleep(t);
+                }
+
+                vet_c.setVet(tempVetC);
+            }
+
+            public void execLoop1() throws InterruptedException {
+                int[] tempVetC = vet_c.getVet();
+                int[] tempVetL = vet_l.getVet();
+
+                for (int i = 0; i < vet_l.getTL(); i++) {
+                    int idx = i; //Precisa pro compilador nao reclamar
+
+                    backgroundL(linha[6], "#c9c5c5");
+                    sleep(t);
+
+                    Platform.runLater(() -> {
+                        backgroundB(buttons_vetl[idx], "#009dff");
+                        backgroundB(buttons_vetc[tempVetL[idx]], "#009dff");
+                        tempVetC[tempVetL[idx]] += 1;
+                        buttons_vetc[tempVetL[idx]].setText(tempVetC[tempVetL[idx]] + "");
+                    });
+                    sleep(t);
+
+                    Platform.runLater(() -> buttons_vetl[idx].setStyle(""));
+                    Platform.runLater(() -> buttons_vetc[tempVetL[idx]].setStyle(""));
+                    backgroundL(linha[6], "transparent");
+                    sleep(t);
+                }
+
+                vet_c.setVet(tempVetC);
             }
 
             public void gotoLine(int ini, int fim) throws InterruptedException {
                 while (ini <= fim) {
-                    background(linha[ini], 1); sleep(t);
-                    background(linha[ini], 0); sleep(t);
+                    backgroundL(linha[ini], "#c9c5c5"); sleep(t);
+                    backgroundL(linha[ini], "transparent"); sleep(t);
                     ini++;
                 }
             }
 
             public void criarVetC() throws InterruptedException {
-                background(linha[2], 1); sleep(t);
+                backgroundL(linha[2], "#c9c5c5"); sleep(t);
 
                 Platform.runLater(() -> {
                     //Gerar itens e indices vetor de contagem
-                    vet_c = new Vetor(vet_l.getMax());
-                    gerarBotoes(vet_c, vetc, 100);
+                    vet_c = new Vetor(vet_l.getMax() + 1);
+                    texto("c", 65, 275);
+                    gerarBotoesVetC(100);
                     gerarIndices(vet_c, 100);
                 });
 
-                background(linha[2], 0); sleep(t);
+                backgroundL(linha[2], "transparent"); sleep(t);
             }
 
             public void criarVetS() throws InterruptedException {
-                background(linha[3], 1); sleep(t);
+                backgroundL(linha[3], "#c9c5c5"); sleep(t);
 
                 Platform.runLater(() -> {
                     //Gerar itens e indices vetor de saida
-                    gerarBotoes(vet_s, vets, 200);
+                    texto("s", 65, 375);
+                    gerarBotoesVetS(200);
                     gerarIndices(vet_s, 200);
                 });
 
-                background(linha[3], 0); sleep(t);
+                backgroundL(linha[3], "transparent"); sleep(t);
             }
         };
 
@@ -135,44 +225,45 @@ public class Counting extends Application {
         thread.start();
     }
 
-    public void move_botoes(int x, int y) {
-        //permutação na tela
-        int sub = (y - x), sleep = 25;
-        indices[x].setVisible(false);
-        indices[y].setVisible(false);
-        for (int i = 0; i < 10; i++) {
-            Platform.runLater(() -> vetl[x].setLayoutY(vetl[x].getLayoutY() + 5));
-            Platform.runLater(() -> vetl[y].setLayoutY(vetl[y].getLayoutY() - 5));
-            try { sleep(sleep); } catch (InterruptedException e) { e.printStackTrace(); }
-        }
-        for (int i = 0; i < abs(sub) * 12; i++) {
-            int val = sub > 0 ? 1 : -1; //Inverter a direção
-            Platform.runLater(() -> vetl[x].setLayoutX(vetl[x].getLayoutX() + (5 * val)));
-            Platform.runLater(() -> vetl[y].setLayoutX(vetl[y].getLayoutX() - (5 * val)));
-            try { sleep(sleep); } catch (InterruptedException e) { e.printStackTrace(); }
-        }
-        for (int i = 0; i < 10; i++) {
-            Platform.runLater(() -> vetl[x].setLayoutY(vetl[x].getLayoutY() - 5));
-            Platform.runLater(() -> vetl[y].setLayoutY(vetl[y].getLayoutY() + 5));
-            try { sleep(sleep); } catch (InterruptedException e) { e.printStackTrace(); }
-        }
-        //permutação na memória
-        Button aux = vetl[x];
-        vetl[x] = vetl[y];
-        vetl[y] = aux;
-
-        indices[x].setVisible(true);
-        indices[y].setVisible(true);
+    public void texto(String str, int x, int y) {
+        Text tx = new Text(str);
+        tx.setLayoutX(x); tx.setLayoutY(y);
+        tx.setStyle("-fx-fill: #000000;");
+        tx.setFont(new Font("Consolas", 15));
+        tx.setVisible(true);
+        pane.getChildren().add(tx);
     }
 
-    public void gerarBotoes(Vetor vetAux, Button[] vet, int offset) {
-        vet = new Button[vetAux.getTL()];
-        for (int i = 0; i < vetAux.getTL(); i++) {
-            vet[i] = new Button(vetAux.at(i) + "");
-            vet[i].setLayoutX(100 + i * 60); vet[i].setLayoutY(200 + offset);
-            vet[i].setMinHeight(40); vet[i].setMinWidth(40);
-            vet[i].setFont(new Font(14));
-            pane.getChildren().add(vet[i]);
+    public void gerarBotoesVetC(int offset) {
+        buttons_vetc = new Button[vet_c.getTL()];
+        for (int i = 0; i < vet_c.getTL(); i++) {
+            buttons_vetc[i] = new Button(vet_c.at(i) + "");
+            buttons_vetc[i].setLayoutX(100 + i * 60); buttons_vetc[i].setLayoutY(150 + offset);
+            buttons_vetc[i].setMinHeight(40); buttons_vetc[i].setMinWidth(40);
+            buttons_vetc[i].setFont(new Font(14));
+            pane.getChildren().add(buttons_vetc[i]);
+        }
+    }
+
+    public void gerarBotoesVetL(int offset) {
+        buttons_vetl = new Button[vet_l.getTL()];
+        for (int i = 0; i < vet_l.getTL(); i++) {
+            buttons_vetl[i] = new Button(vet_l.at(i) + "");
+            buttons_vetl[i].setLayoutX(100 + i * 60); buttons_vetl[i].setLayoutY(150 + offset);
+            buttons_vetl[i].setMinHeight(40); buttons_vetl[i].setMinWidth(40);
+            buttons_vetl[i].setFont(new Font(14));
+            pane.getChildren().add(buttons_vetl[i]);
+        }
+    }
+
+    public void gerarBotoesVetS(int offset) {
+        buttons_vets = new Button[vet_s.getTL()];
+        for (int i = 0; i < vet_s.getTL(); i++) {
+            buttons_vets[i] = new Button(vet_s.at(i) + "");
+            buttons_vets[i].setLayoutX(100 + i * 60); buttons_vets[i].setLayoutY(150 + offset);
+            buttons_vets[i].setMinHeight(40); buttons_vets[i].setMinWidth(40);
+            buttons_vets[i].setFont(new Font(14));
+            pane.getChildren().add(buttons_vets[i]);
         }
     }
 
@@ -182,7 +273,7 @@ public class Counting extends Application {
             indices[i] = new Text(i + "");
         }
         for (int i = 0; i < vetAux.getTL(); i++) {
-            indices[i].setLayoutX(115 + i * 60); indices[i].setLayoutY(260 + offset);
+            indices[i].setLayoutX(115 + i * 60); indices[i].setLayoutY(210 + offset);
             indices[i].setStyle("-fx-fill: #000000;");
             indices[i].setVisible(true);
             indices[i].setFont(new Font("Consolas", 15));
@@ -221,22 +312,15 @@ public class Counting extends Application {
         }
     }
 
-    public void background(Label texto, int codigo) {
+    public void backgroundL(Label lb, String color) {
         Platform.runLater(() -> {
-            switch (codigo) {
-                // Padrão
-                case 0:
-                    texto.setStyle("-fx-text-fill: black; -fx-background-color: transparent; -fx-padding: 2;");
-                break;
+            lb.setStyle("-fx-text-fill: black; -fx-background-color: " + color + "; -fx-padding: 2;");
+        });
+    }
 
-                // Cinza
-                case 1:
-                    texto.setStyle("-fx-text-fill: white; -fx-background-color: #c9c5c5; -fx-padding: 2;");
-                break;
-
-                default:
-                    break;
-            }
+    public void backgroundB(Button bt, String color) {
+        Platform.runLater(() -> {
+            bt.setStyle("-fx-text-fill: black; -fx-background-color: " + color + "; -fx-padding: 2;");
         });
     }
 }
